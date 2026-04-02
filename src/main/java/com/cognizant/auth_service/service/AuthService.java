@@ -29,7 +29,7 @@ public class AuthService {
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        user.setRole(Role.PATIENT);
+        user.setRole(Role.ADMIN);
         userRepository.save(user);
 
         return "User registered successfully";
@@ -39,12 +39,12 @@ public class AuthService {
         Users user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        System.out.println("re" + request.getPassword() + "us" + user.getPassword());
+       //System.out.println("re" + request.getPassword() + "us" + user.getPassword());
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new RuntimeException("Invalid Credentials");
         }
 
-        String token = jwtUtil.generateToken(user.getUsername());
+        String token = jwtUtil.generateToken(user.getUsername(), user.getRole().name());
         return new AuthResponse(token);
     }
 }
