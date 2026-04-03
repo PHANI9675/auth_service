@@ -3,6 +3,7 @@ package com.cognizant.auth_service.controller;
 import com.cognizant.auth_service.dto.AuthRequest;
 import com.cognizant.auth_service.dto.AuthResponse;
 import com.cognizant.auth_service.service.AuthService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public String register(@RequestBody AuthRequest request){
+    public String register(@Valid @RequestBody AuthRequest request){
         return authService.register(request);
     }
 

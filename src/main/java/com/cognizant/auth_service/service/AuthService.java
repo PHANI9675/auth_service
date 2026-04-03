@@ -25,22 +25,29 @@ public class AuthService {
     public String register(AuthRequest request){
 
         Users user = new Users();
+        String username = request.getUsername().trim();
 
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        if(userRepository.findByUsername(username).isPresent()){
+            throw new RuntimeException("Username Already Exists");
+        }
+        String password = request.getPassword().trim();
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
 
-        user.setRole(Role.ADMIN);
+        user.setRole(Role.PATIENT);
         userRepository.save(user);
 
         return "User registered successfully";
     }
 
     public AuthResponse login(AuthRequest request){
-        Users user = userRepository.findByUsername(request.getUsername())
+        String username = request.getUsername().trim();
+        String password = request.getPassword().trim();
+        Users user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
        //System.out.println("re" + request.getPassword() + "us" + user.getPassword());
-        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
+        if(!passwordEncoder.matches(password, user.getPassword())){
             throw new RuntimeException("Invalid Credentials");
         }
 
