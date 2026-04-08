@@ -34,7 +34,7 @@ public class AuthService {
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
 
-        user.setRole(Role.PATIENT);
+        user.setRole(Role.ADMIN);
         userRepository.save(user);
 
         return "User registered successfully";

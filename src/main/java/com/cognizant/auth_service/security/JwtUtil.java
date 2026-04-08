@@ -3,6 +3,7 @@ package com.cognizant.auth_service.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -11,7 +12,8 @@ import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private final String SECRET = "mysecret1234jayasaimysecret1234jayasaimysecret1234jayasaimysecret1234jayasai";
+    @Value("${JWT_SECRET}")
+    private String SECRET;
 
     private Key getSigningKey(){
         return Keys.hmacShaKeyFor(SECRET.getBytes());
